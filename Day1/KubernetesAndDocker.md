@@ -119,4 +119,3 @@
 - Google Kubernetes Engine
 	- 구글 클라우드와는 별개로 동작
     - 단, 클라우드 내부에서 Kubernetes를 대부분 지원 (AWS, GCL, ...)
-    
