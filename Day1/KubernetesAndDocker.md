@@ -62,16 +62,43 @@
     - 서로 다른 노드에 설치될 수도 있음
     - 컨테이너끼리 디스크 자원을 공유할 수 없음
 - Kubernetes 아키텍쳐
-	- Kubernetes Master가 Kubernetes Node를 관리
-    - 각 Kubernetes Node는
+	- Kubernetes Master가 Kubernetes Node들을 관리
+    - Kubernetes Node는
     	- 여러 개의 Pod을 갖고 있음
         - Kubelet을 갖고 있음
         	- Master의 API Server와 통신
         - cAdvisor를 갖고 있음
     	- Kube-Proxy를 갖고 있음
         	- Pod들간의 통신을 할 때 컨테이너 이름을 기준으로 통신을 할 수 있게 해줌
-            
-    
-- Deployment가 복수 개의 ReplicaSet을 통해 Rolling Update 처리
-- ReplicaSet에서 Pod들의 Scaling 담당
-- 
+	- Kubernetes Master는
+    	- API Server를 갖고 있음
+        	- Controller Manager를 갖고 있음
+            - Scheduler를 갖고 있음
+        - etcd를 갖고 있음
+        	- 모든 메타정보를 갖고 있음
+- Kubernetes Service
+	- Service 
+    	- L4 로드밸런서로 로드밸런싱 및 페일오버
+    		- ex) 여러개의 접속이 들어왔을 때 어느 pod으로 갈지...
+            - L4는 포트 기반으로 서비스를 나눠줌
+    - Service는 MSA상의 서비스와 거의 동일한 단위
+- Kubernetes Ingress
+	- Ingress
+    	- L7 로드밸런서	
+        	- L7은 L4와 달리 패킷의 내용을 볼 수 있음
+        - URI 기반으로 서비스 별 라우팅
+        - 서비스 앞 단에 위치
+        	- 하나의 Ingress는 많은 서비스를 관리
+		- Google Cloud의 로드밸런서
+- Kubernetes Deployment & ReplicaSet
+	- Deployment가 복수 개의 ReplicaSet을 통해 Rolling Update 처리
+    	- 테스트용 프로그램을 Deployment에 올려본다.
+        - 성공하면 ReplicaSet -> Pod -> Service -> Ingress으로 순차적으로 배포
+        	- 운영시스템의 안정성을 높임
+	- ReplicaSet에서 Pod들의 Scaling 담당
+- Kubernetes Namespace
+	- Kubernates 클러스터를 부서, 프로젝트 등의 단위로 분리
+    - 리소스를 분리하여 관리
+    	- 물리적으로 완전히 분리
+        - 리소스를 더 많이 더 적게 주는 것이 가능
+        - 하나의 쿠버네티스를 나눠쓰고 싶을 때
