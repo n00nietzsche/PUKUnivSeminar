@@ -102,3 +102,21 @@
     	- 물리적으로 완전히 분리
         - 리소스를 더 많이 더 적게 주는 것이 가능
         - 하나의 쿠버네티스를 나눠쓰고 싶을 때
+- Kubernetes Volume
+	- Conotainer 내부 디스크는 Ephemera (Stateless)
+    	- 컨테이너가 한번 지워지면 모든 정보가 사라진다.
+    - Volume = Persistent Disk
+    - Volume의 종류
+    	- gcePD
+        - awsEBS
+        - cephfs 등
+    - Container 내부 디렉토리에 Mount
+    	- 컨테이너에서 기억하고 싶은 상태를 넣어둘 수 있다.
+        - 추상화 때문에 이러한 개념들이 생긴다
+        - 컨테이너가 같은 Volume을 공유할 수 있다.
+    - Volume - Pod과 같은 Lifecycle
+    - Persistent Volume - Pod과 별도의 자원으로 관리
+- Google Kubernetes Engine
+	- 구글 클라우드와는 별개로 동작
+    - 단, 클라우드 내부에서 Kubernetes를 대부분 지원 (AWS, GCL, ...)
+    
