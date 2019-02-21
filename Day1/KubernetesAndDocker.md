@@ -26,13 +26,52 @@
     	- host 머신보다 느리지만 vm과 비교하면 상대적으로 매우 빠르다.
         - vm은 io가 발생하는 통로가 container보다 많다.
         	- vm은 host os에서 거의 완전히 분리된 형태로 운영되지만 io가 오갈 때는 host os를  결국 병목이 발생할 수 밖에 없다.
+
+
 ## Docker의 특징
-- 설치 과정을 상세히 기술해야 한다.
+- 컨테이너 중 하나.
 - Docker만의 문법으로 작성하여야 한다.
+- 배포할 어플리케이션의 설치 과정을 상세히 기술해야 한다.
 - 의존성에 필요한 것이 있다면 알아서 설치해준다.
 - DB를 외부에 마운트해서 연동 가능.
 	- 시스템이 아무리 변경된다고 해도 DB는 영향을 받지 않는다.
 - 네트웍은 분리 가능하고 원한다면 host로 통신도 가능하다.
-- Light and Scalable
+- Light and Scalable.
 
-## 
+## Docker 실습
+- Dockerfile을 작성
+	- Docker문법을 이용해야 한다.
+	```
+    FROM PYTHON:2
+    	...
+    ```
+- 실행 방법
+	- docker run -d --name 도커 이름 -e 환경변수...
+- 로그 보기
+	- docker logs -f 도커 이름
+
+## 쿠버네티스란?
+- Kubernetes는 사실상의 컨테이너 관리 표준
+- 컨테이너를 효과적으로 배포할 수 있는 툴
+	- container 자체를 묶으면 너무 low level로 묶이기 때문에 pod을 이용
+	- 여러 개의 컨테이너는 하나의 Pod이라는 단위로 묶음
+    	- Pod 내에서 컨테이너들은 IP와 스토리지를 공유
+- Kubernetes가 없는 컨테이너 환경
+	- 각 컨테이너가 독립적으로 실행
+    - 각자 다른 IP/NETWORK로 통신
+    - 서로 다른 노드에 설치될 수도 있음
+    - 컨테이너끼리 디스크 자원을 공유할 수 없음
+- Kubernetes 아키텍쳐
+	- Kubernetes Master가 Kubernetes Node를 관리
+    - 각 Kubernetes Node는
+    	- 여러 개의 Pod을 갖고 있음
+        - Kubelet을 갖고 있음
+        	- Master의 API Server와 통신
+        - cAdvisor를 갖고 있음
+    	- Kube-Proxy를 갖고 있음
+        	- Pod들간의 통신을 할 때 컨테이너 이름을 기준으로 통신을 할 수 있게 해줌
+            
+    
+- Deployment가 복수 개의 ReplicaSet을 통해 Rolling Update 처리
+- ReplicaSet에서 Pod들의 Scaling 담당
+- 
