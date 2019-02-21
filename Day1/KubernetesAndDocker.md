@@ -119,3 +119,52 @@
 - Google Kubernetes Engine
 	- 구글 클라우드와는 별개로 동작
     - 단, 클라우드 내부에서 Kubernetes를 대부분 지원 (AWS, GCL, ...)
+
+## 쿠버네티스 고급
+- StatefulSet
+	- 데이터 저장이 필요한 애플리케이션 지원 (ex: DB)
+    - Kubernetes 1.9부터 지원
+    - Pod의 이름이 일정한 규칙을 가진 형태로 생성
+    	- 반면 Deployment나 ReplicaSet으로 생성된 Pod은 랜덤한 Postfix가 붙음
+- Volume
+	- Volume(Stateful 포함)의 디스크는 기본적으로 휘발성
+		- Crash되어 재시작되면 기존 데이터가 사라짐
+	- Pod이 존재하는 동안 데이터가 유지되는 저장소
+    - Container에 Mount 가능
+    - Pod 내의 컨테이너 간에 공유
+    - Pod의 라이프싸이클과 일치 (Pod의 생성과 함께 만들어져, Pod의 종료와 함께 삭제)
+	- Volume의 종류 - emptyDir
+		- 임시 데이터 저장에 적합한 간단한 저장소
+   		- Pod과 동일한 라이프싸이클 (Pod 삭제 시 사라짐)
+	- Volume의 종류 - hostPath
+		- Pod이 위치한 노드의 파일 시스템 특정 위치
+    	- 동일한 노드에서 동작하는 여러가지 Pod들이 저장소 공유 가능
+    	- Pod이 종료되어도 hostPath 저장소는 삭제되지 않음
+	- Volume의 종류 - nfs 
+		- NFS 디스크를 Pod에 Mount함
+    	- Pod이 종료되어도 디스크의 데이터 보존
+    	- 동시에 여러 Pod에서 Read/Write 가능
+	- Volume의 종류 - Persistent Volume
+		- Pod의 라이프싸이클과 별도로 Kubernetes에 의해 관리되는 저장소
+    	- 동시 접근 안됨
+- Job
+	- 유한한 작업을 나타내는 컨트롤러
+    - 지속적으로 동작하는 것이 아니라, 작업 동료와 동시에 리소스가 정리
+    - 대규모 계산이나 배치 작업에 적합
+    - 두 가지 종류
+    	- Non-parallel Job: 하나의 Pod에서만 실행되는 Job. Pod이 비정상 종료되면 다시 Job이 생성되고, 정상종료될 경우 Job은 완료 처리
+        - Parallel jobs with completion count: 지정된 개수의 Pod들이 실행되어 정상 종료되었을 때 완료 처리
+- Deployment
+	- Blue/Green Deployment Model
+    	- A, B테스트와 같이 A버전과 B버전을 만듦
+        - 맘에 드는 버전 하나를 사용하고 나머지는 버림
+    - Rolling update
+    	- 서비스의 중단 없이
+	- Deployment Strategy 
+    	- Recreate: it will have service outage
+        - Rolling update: without service stop
+- Pod Affinity
+	- 특정 Pod이 있는 Node에 띄워주고 싶을 때...
+    	- ex) DB가 있는 Pod에 띄우고 싶다.
+    - 특정 Pod이 있는 Node에 가기 싫을 때...
+    
